@@ -24,7 +24,7 @@ function Board() {
       {
         ranks.map((rank,i)=>
           files.map((file,j)=>
-            <div key={file+''+rank} className={getClassName(i,j)}></div>
+            <div key={file+''+rank} className={getClassName(7-i,j)}></div>
           )
       )
       }

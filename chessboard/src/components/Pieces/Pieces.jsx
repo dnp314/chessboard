@@ -1,45 +1,47 @@
 import './Pieces.css'
 import Piece from './Piece'
+import { useState, useRef } from 'react'
+import { createPosition, copyPosition } from '../../helper'
+
 function Pieces() {
   
-  const position = new Array(8).fill('').map(x=>new Array(8).fill(''))
-  
-  for(let i=0;i<8;i++){
-    position[1][i]='wP'
-    position[6][i]='bP'
+  const ref = useRef()
+
+  const [state, setState] = useState(createPosition())
+
+  const calculateCoords = e => {
+    const {width,left,top} = ref.current.getBoundingClientRect()
+    const size =  width/8
+    const y = Math.floor((e.clientX - left)/size)
+    const x = 7 - Math.floor((e.clientY - top)/size)
+    return {x,y}
   }
-  
-  position[0][0] = 'wR';
-  position[0][1] = 'wN';
-  position[0][2] = 'wB';
-  position[0][3] = 'wQ';
-  position[0][4] = 'wK';
-  position[0][5] = 'wB';
-  position[0][6] = 'wN';
-  position[0][7] = 'wR';
 
-  position[7][0] = 'bR';
-  position[7][1] = 'bN';
-  position[7][2] = 'bB';
-  position[7][3] = 'bQ';
-  position[7][4] = 'bK';
-  position[7][5] = 'bB';
-  position[7][6] = 'bN';
-  position[7][7] = 'bR';
+  const onDrop = e =>{  
+    const newPosition = copyPosition(state)
+    const {x,y} = calculateCoords(e)
+    const [p,rank,file] = e.dataTransfer.getData('text').split(',')
+    newPosition[rank][file] = ''
+    newPosition[x][y] = p
+    setState(newPosition)
+  }
 
+  const onDragOver = e => e.preventDefault()
 
-  console.log(position)
-
-  return <div className="pieces">
+  return <div 
+  ref = {ref}
+  onDrop={onDrop}
+  onDragOver={onDragOver} 
+  className="pieces">
     {
-      position.map((r,rank)=>
+      state.map((r,rank)=>
         r.map((f,file)=>
-          position[rank][file]
+          state[rank][file]
           ? <Piece
              key={rank+'-'+file}
              rank={rank}
              file={file}
-             piece={position[rank][file]}
+             piece={state[rank][file]}
             />
           : null
     ))}
