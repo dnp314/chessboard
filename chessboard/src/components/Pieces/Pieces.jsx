@@ -27,6 +27,12 @@ function Pieces() {
     const [p,rank,file] = e.dataTransfer.getData('text').split(',')
     
     if (appState.candidateMoves?.find(m=>m[0]===x && m[1]===y)){
+      
+      if (p.endsWith('P') && newPosition[x][y] === '' && x !== rank && y !== file) {
+        const dir = p[0] === 'w' ? 1 : -1;
+        newPosition[x - dir][y] = '';
+    }
+
       newPosition[rank][file] = ''
       newPosition[x][y] = p
       dispatch(makeNewMove({newPosition}))
