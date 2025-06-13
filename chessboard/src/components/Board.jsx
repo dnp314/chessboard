@@ -2,6 +2,7 @@ import { useAppContext } from '../contexts/Context'
 import { getCharacter } from '../helper'
 import './Board.css'
 import Pieces from './Pieces/Pieces'
+import Popup from './Popup/Popup'
 import Files from './bits/Files'
 import Ranks from './bits/Ranks'
 
@@ -44,6 +45,8 @@ function Board() {
     </div>
     
     <Pieces/>
+
+    <Popup/>
 
     <Files files={files}/>
 
