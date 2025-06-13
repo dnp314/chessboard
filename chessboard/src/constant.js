@@ -15,5 +15,9 @@ export const initGameState = {
   turn :'w',
   candidateMoves :[],
   status: Status.ongoing,
-  promotionSquare : null
+  promotionSquare : null,
+  castleDirection :{
+    w: 'both',
+    b: 'both'
+  }
 }

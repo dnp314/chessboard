@@ -169,3 +169,81 @@ export const getPawnCaptures = ({position,prevPosition,piece,rank,file}) =>{
 
   return moves
 }
+
+export const getCastlingMoves = ({position,castleDirection,piece,rank,file})=>{
+  const moves =[]
+
+  if (file !==4 || rank%7!==0 || castleDirection==='none'){
+    return moves
+  }
+
+  if(piece.startsWith('w')){
+    if(['left','both'].includes(castleDirection) && 
+      !position[0][3] &&
+      !position[0][2] &&
+      !position[0][1] &&
+       position[0][0] === 'wR'
+    ){
+      moves.push([0,2])
+    }
+    if(['right','both'].includes(castleDirection) && 
+      !position[0][5] &&
+      !position[0][6] &&
+       position[0][7] === 'wR'
+    ){
+      moves.push([0,6])
+    }
+  }
+  if(piece.startsWith('b')){
+    if(['left','both'].includes(castleDirection) && 
+      !position[7][3] &&
+      !position[7][2] &&
+      !position[7][1] &&
+       position[7][0] === 'bR'
+    ){
+      moves.push([7,2])
+    }
+    if(['right','both'].includes(castleDirection) && 
+      !position[7][5] &&
+      !position[7][6] &&
+       position[7][7] === 'bR'
+    ){
+      moves.push([7,6])
+    }
+  }
+
+  return moves
+}
+
+export const getCastlingDirections = ({castleDirection,piece,file,rank}) => {
+    file = Number(file)
+    rank = Number(rank)
+    const direction = castleDirection[piece[0]]
+    if (piece.endsWith('K'))
+        return 'none'
+
+    if (file === 0 && rank === 0 ){ 
+        if (direction === 'both')
+            return 'right'
+        if (direction === 'left')
+            return 'none'
+    } 
+    if (file === 7 && rank === 0 ){ 
+        if (direction === 'both')
+            return 'left'
+        if (direction === 'right')
+            return 'none'
+    } 
+    if (file === 0 && rank === 7 ){ 
+        if (direction === 'both')
+            return 'right'
+        if (direction === 'left')
+            return 'none'
+    } 
+    if (file === 7 && rank === 7 ){ 
+        if (direction === 'both')
+            return 'left'
+        if (direction === 'right')
+            return 'none'
+    } 
+}
