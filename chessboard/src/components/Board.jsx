@@ -5,6 +5,8 @@ import { getCharacter } from '../helper'
 import './Board.css'
 import Pieces from './Pieces/Pieces'
 import Popup from './Popup/Popup'
+import PromotionBox from './Popup/PromotionBox/PromotionBox'
+import GameEnds from './Popup/GameEnds/GameEnds'
 import Files from './bits/Files'
 import Ranks from './bits/Ranks'
 
@@ -63,7 +65,11 @@ function Board() {
     
     <Pieces/>
 
-    <Popup/>
+    <Popup>
+      <PromotionBox/>
+      <GameEnds />
+
+    </Popup>
 
     <Files files={files}/>
 
