@@ -290,7 +290,7 @@ export const getCastlingDirections = ({castleDirection,piece,file,rank}) => {
 
 export const getKingPosition = (position,player) =>{
 
-  let kingPos
+  let kingPos = []
   position.forEach((rank,x) => {
     rank.forEach((file,y) => {
         if (position[x][y].startsWith(player) && position[x][y].endsWith('K'))

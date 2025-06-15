@@ -1,3 +1,4 @@
+import { areSameColorTiles, findPieceCoords } from "../helper"
 import { getBishopMoves, getKingMoves, getKnightMoves, getPawnCaptures, getPawnMoves, getQueenMoves, getRookMoves, getCastlingMoves, getKingPosition, getPieces } from "./getMoves"
 import { movePawn, movePiece } from "./move"
 
@@ -45,15 +46,7 @@ const arbiter = {
 
     return notInCheckMoves
   },
-  
-  performMove: function ({position,piece,rank,file,x,y}){
-    if(piece.endsWith('P')){
-      return movePawn({position,piece,rank,file,x,y})
-    }
-    else{
-      return movePiece({position,piece,rank,file,x,y})
-    }
-  },
+
 
   isPlayerInCheck: function({positionAfterMove,position,player}){
     const enemy = player.startsWith('w')?'b':'w'
@@ -100,8 +93,46 @@ const arbiter = {
 
     return (!isInCheck && moves.length===0)
 
-  } 
+  },
+  
+  insufficientMaterial: function(position){
+    const pieces = position.reduce((acc,rank)=>
+    acc =[
+      ...acc,
+      ...rank.filter(x => x)
+    ],[])
 
+    //Two kings
+    if (pieces.length === 2)
+      return true
+
+    //Two kings, and one either bishop or knight
+    if (pieces.length === 3 && (pieces.some(p=>p.endsWith('B') || p.endsWith('N'))))
+      return true
+
+    //Only possible when the bishops are of different colors
+    if(pieces.length === 4 &&
+      pieces.every(p=> p.endsWith('B') || p.endsWith('K') &&
+      new Set(pieces).size === 4 &&
+      areSameColorTiles(
+        findPieceCoords(position,'wB')[0],
+        findPieceCoords(position,'bB')[0],
+      )
+      )
+      )
+      return true
+  
+    return false
+  },
+    
+  performMove: function ({position,piece,rank,file,x,y}){
+    if(piece.endsWith('P')){
+      return movePawn({position,piece,rank,file,x,y})
+    }
+    else{
+      return movePiece({position,piece,rank,file,x,y})
+    }
+  },
 
 }
 
