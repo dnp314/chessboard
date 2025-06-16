@@ -8,6 +8,6 @@ issues with the notation, like check, checkmate,
 three fold repition is missing,
 50 move rule,
 after checkmate takeback does not close the popup
-
+making it a npm repo
 depends on what you want to do further from this,
 lets focus on thunderblunder
